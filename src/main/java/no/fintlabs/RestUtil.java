@@ -17,7 +17,7 @@ public class RestUtil {
         return webClient.get()
                 .uri(uri)
                 .retrieve()
-                .bodyToMono(clazz);
+                .bodyToMono(clazz)
+                .log();
     }
-
 }

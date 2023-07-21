@@ -1,15 +1,16 @@
 package no.fintlabs;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fint.model.resource.utdanning.ot.OTUngdomResources;
+import no.fint.model.resource.utdanning.larling.LarlingResources;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import javax.annotation.PostConstruct;
+
 
 @Slf4j
 @Service
 public class TextClient {
-    public String endpoint = "utdanning/ot/otungdom";
     private final RestUtil restUtil;
 
     public TextClient(RestUtil restUtil) {
@@ -18,13 +19,8 @@ public class TextClient {
 
     @PostConstruct
     private void fetchData() {
-        if (restUtil.exists(endpoint)) {
-            restUtil.get(OTUngdomResources.class, endpoint)
-                    .doOnNext(l -> log.info(String.valueOf(l)))
-                    .doOnError(e -> log.error("Something went wrong: "))
-                    .subscribe();
-        }
-        else{log.error("This endpoint dose not exist");
-        }
+        restUtil.get(LarlingResources.class, "/utdanning/larling/person")
+                .doOnNext(l -> log.info(String.valueOf(l)))
+                .subscribe();
     }
 }

@@ -12,23 +12,26 @@ import java.time.Duration;
 @Slf4j
 @Service
 public class RestUtil {
+    public static final int MAX_ATTEMPTS = 8;
+    public static final int SECONDS = 60;
     private final WebClient webClient;
 
     public RestUtil(WebClient webClient) {
         this.webClient = webClient;
     }
 
+
     public <T> Mono<T> get(Class<T> clazz, String uri) {
         return webClient.get()
                 .uri(uri)
                 .retrieve()
                 .bodyToMono(clazz)
-                .retryWhen(Retry.backoff(3, Duration.ofSeconds(2))
-                        .doBeforeRetry(retrySignal -> log.error("Retrying")))
-                .doOnError(this::handleErrorResponse);
+                .retryWhen(Retry.backoff(MAX_ATTEMPTS, Duration.ofSeconds(SECONDS))
+                        .doBeforeRetry(retrySignal -> log.error("Retrying")));
     }
 
-    private void handleErrorResponse(Throwable throwable) {
+
+    public void handleErrorResponse(Throwable throwable) {
         if (throwable instanceof WebClientResponseException responseException) {
             int statusCode = responseException.getStatusCode().value();
 

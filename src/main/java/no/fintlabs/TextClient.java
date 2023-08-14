@@ -2,6 +2,7 @@ package no.fintlabs;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.model.felles.kodeverk.Kommune;
+import no.fint.model.okonomi.faktura.Fakturautsteder;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.PostConstruct;

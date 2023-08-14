@@ -18,7 +18,7 @@ public class TextClient {
 
     @PostConstruct
     private void fetchData() {
-        restUtil.get(Kommune.class, "/felles/kodeverk/kommune")
+        restUtil.get(Fakturautsteder.class, "/okonomi/faktura/fakturautsteder")
                 .doOnNext(l -> log.info(String.valueOf(l)))
                 .doOnError(throwable -> restUtil.handleErrorResponse(throwable))
                 .subscribe();
